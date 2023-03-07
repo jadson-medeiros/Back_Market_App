@@ -11,8 +11,11 @@ import {
 @Entity({ name: 'marketplaces' })
 export default class MarketPlace {
   @Field()
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn({
+    type: 'bigint',
+    name: 'marketplace_id',
+  })
+  id: number;
 
   @Field()
   @Column()

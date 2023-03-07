@@ -11,8 +11,10 @@ import {
 @Entity({ name: 'users' })
 export default class User {
   @Field()
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn({
+    type: 'bigint',
+  })
+  id: number;
 
   @Field()
   @Column()
