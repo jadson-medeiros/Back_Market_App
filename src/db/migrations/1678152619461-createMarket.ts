@@ -6,21 +6,15 @@ export class createMarket1678152619461 implements MigrationInterface {
     columns: [
       {
         name: 'id',
-        type: 'string',
+        type: 'uuid',
         isPrimary: true,
-        isGenerated: true, // Auto-increment
-        generationStrategy: 'increment',
+        generationStrategy: 'uuid',
+        default: 'uuid_generate_v4()',
       },
       {
         name: 'name',
         type: 'varchar',
         length: '255',
-        isUnique: false,
-        isNullable: false,
-      },
-      {
-        name: 'images',
-        type: 'double',
         isUnique: false,
         isNullable: false,
       },

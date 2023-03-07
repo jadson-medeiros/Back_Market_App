@@ -6,10 +6,10 @@ export class CreateUser1677958528455 implements MigrationInterface {
     columns: [
       {
         name: 'id',
-        type: 'string',
+        type: 'uuid',
         isPrimary: true,
-        isGenerated: true, // Auto-increment
-        generationStrategy: 'increment',
+        generationStrategy: 'uuid',
+        default: 'uuid_generate_v4()',
       },
       {
         name: 'name',
