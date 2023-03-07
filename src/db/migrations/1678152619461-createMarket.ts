@@ -1,8 +1,8 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateUser1677958528455 implements MigrationInterface {
+export class createMarket1678152619461 implements MigrationInterface {
   private table = new Table({
-    name: 'users',
+    name: 'marketsplaces',
     columns: [
       {
         name: 'id',
@@ -19,17 +19,9 @@ export class CreateUser1677958528455 implements MigrationInterface {
         isNullable: false,
       },
       {
-        name: 'password',
-        type: 'string',
-        length: '255',
+        name: 'images',
+        type: 'double',
         isUnique: false,
-        isNullable: false,
-      },
-      {
-        name: 'email',
-        type: 'string',
-        length: '255',
-        isUnique: true,
         isNullable: false,
       },
       {
