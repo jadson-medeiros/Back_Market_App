@@ -19,10 +19,6 @@ export default class MarketPlace {
   name: string;
 
   @Field()
-  @Column()
-  images: number;
-
-  @Field()
   @CreateDateColumn()
   created_at: Date;
 
