@@ -11,8 +11,8 @@ import {
 @Entity({ name: 'marketplaces' })
 export default class MarketPlace {
   @Field()
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Field()
   @Column()
