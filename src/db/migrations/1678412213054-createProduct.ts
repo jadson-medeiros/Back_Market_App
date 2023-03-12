@@ -20,7 +20,7 @@ export class createProduct1678412213054 implements MigrationInterface {
       },
       {
         name: 'brand',
-        type: 'string',
+        type: 'varchar',
         length: '255',
         isUnique: false,
         isNullable: false,
