@@ -1,20 +1,23 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import User from 'src/db/models/user.entity';
-import { RepoService } from 'src/repo.service';
-import UserInput from './input/user.input';
+import 'reflect-metadata';
 
-@Resolver()
-export default class UserResolver {
-  constructor(private readonly repoService: RepoService) {}
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import User from 'src/dtos/user';
+import UserInput from './input/user.input';
+import { Inject } from '@nestjs/common';
+import { PrismaService } from '../prisma.service';
+
+@Resolver(User)
+export class UserResolver {
+  constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
 
   @Query(() => [User])
   public async getUsers(): Promise<User[]> {
-    return this.repoService.userRepo.find();
+    return this.prismaService.users.findMany();
   }
 
   @Query(() => User, { nullable: true })
   public async getUser(@Args('id') id: number): Promise<User> {
-    return await this.repoService.userRepo.findOne({
+    return await this.prismaService.users.findUnique({
       where: {
         id: id,
       },
@@ -23,12 +26,14 @@ export default class UserResolver {
 
   @Mutation(() => User)
   public async createUser(@Args('data') input: UserInput): Promise<User> {
-    const user = this.repoService.userRepo.create({
-      name: input.name,
-      email: input.email,
-      password: `1234556`,
+    return this.prismaService.users.create({
+      data: {
+        name: input.name,
+        email: input.email,
+        password: input.password,
+      },
     });
 
-    return this.repoService.userRepo.save(user);
+    //return this.repoService.userRepo.save(user);
   }
 }

@@ -1,21 +1,16 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { options } from './config/ormconfig';
-import { RepoModule } from './repo.module';
-import UserResolver from './resolvers/user.resolver';
+import { UserResolver } from './resolvers/user.resolver';
+import { PrismaService } from './prisma.service';
 
 const graphQLImports = [UserResolver];
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(options),
-    RepoModule,
-    ...graphQLImports,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
@@ -23,6 +18,7 @@ const graphQLImports = [UserResolver];
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [PrismaService, UserResolver, AppService],
+  exports: [PrismaService],
 })
 export class AppModule {}

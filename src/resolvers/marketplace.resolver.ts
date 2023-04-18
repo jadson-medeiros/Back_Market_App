@@ -1,19 +1,20 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import MarketPlace from 'src/db/models/marketplace.entity';
-import { RepoService } from 'src/repo.service';
+import MarketPlace from 'src/dtos/marketplace';
+import { PrismaService } from 'src/prisma.service';
+import { Inject } from '@nestjs/common';
+import { marketsplaces } from '@prisma/client';
 
 @Resolver()
 export default class MarketPlaceResolver {
-  constructor(private readonly repoService: RepoService) {}
-
+  constructor(private prismaService: PrismaService) {}
   @Query(() => [MarketPlace])
-  public async getMarketPlaces(): Promise<MarketPlace[]> {
-    return this.repoService.marketPlaceRepo.find();
+  public async getMarketPlaces(): Promise<marketsplaces[]> {
+    return this.prismaService.marketsplaces.findMany();
   }
 
   @Query(() => MarketPlace, { nullable: true })
-  public async getMarketPlace(@Args('id') id: number): Promise<MarketPlace> {
-    return await this.repoService.marketPlaceRepo.findOne({
+  public async getMarketPlace(@Args('id') id: number): Promise<marketsplaces> {
+    return await this.prismaService.marketsplaces.findUnique({
       where: {
         id: id,
       },
@@ -23,11 +24,13 @@ export default class MarketPlaceResolver {
   @Mutation(() => MarketPlace)
   public async createMarketPlace(
     @Args('data') input: MarketPlace,
-  ): Promise<MarketPlace> {
-    const marketplace = this.repoService.marketPlaceRepo.create({
-      name: input.name,
+  ): Promise<marketsplaces> {
+    return this.prismaService.marketsplaces.create({
+      data: {
+        name: input.name,
+      },
     });
 
-    return this.repoService.marketPlaceRepo.save(marketplace);
+    //return this.prismaService.marketsplaces.update({data: {marketplace} });
   }
 }
