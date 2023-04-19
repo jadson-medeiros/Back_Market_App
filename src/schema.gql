@@ -28,4 +28,5 @@ type Mutation {
 input UserInput {
   email: String!
   name: String!
+  password: String!
 }
