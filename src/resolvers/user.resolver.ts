@@ -16,7 +16,7 @@ export class UserResolver {
   }
 
   @Query(() => User, { nullable: true })
-  public async getUser(@Args('id') id: number): Promise<User> {
+  public async getUser(@Args('id') id: string): Promise<User> {
     return await this.prismaService.users.findUnique({
       where: {
         id: id,
@@ -33,7 +33,5 @@ export class UserResolver {
         password: input.password,
       },
     });
-
-    //return this.repoService.userRepo.save(user);
   }
 }

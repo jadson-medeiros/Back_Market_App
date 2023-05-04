@@ -1,20 +1,23 @@
+import 'reflect-metadata';
+
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import MarketPlace from 'src/dtos/marketplace';
-import { PrismaService } from 'src/prisma.service';
+import MarkePlaceInput from './input/marketplace.input';
 import { Inject } from '@nestjs/common';
-import { marketsplaces } from '@prisma/client';
+import { PrismaService } from '../prisma.service';
 
-@Resolver()
-export default class MarketPlaceResolver {
-  constructor(private prismaService: PrismaService) {}
+@Resolver(MarketPlace)
+export class MarketPlaceResolver {
+  constructor(@Inject(PrismaService) private prismaService: PrismaService) {}
+
   @Query(() => [MarketPlace])
-  public async getMarketPlaces(): Promise<marketsplaces[]> {
-    return this.prismaService.marketsplaces.findMany();
+  public async getMarketPlaces(): Promise<MarketPlace[]> {
+    return this.prismaService.marketPlaces.findMany();
   }
 
   @Query(() => MarketPlace, { nullable: true })
-  public async getMarketPlace(@Args('id') id: number): Promise<marketsplaces> {
-    return await this.prismaService.marketsplaces.findUnique({
+  public async getMarketPlace(@Args('id') id: string): Promise<MarketPlace> {
+    return await this.prismaService.marketPlaces.findUnique({
       where: {
         id: id,
       },
@@ -23,14 +26,12 @@ export default class MarketPlaceResolver {
 
   @Mutation(() => MarketPlace)
   public async createMarketPlace(
-    @Args('data') input: MarketPlace,
-  ): Promise<marketsplaces> {
-    return this.prismaService.marketsplaces.create({
+    @Args('data') input: MarkePlaceInput,
+  ): Promise<MarketPlace> {
+    return this.prismaService.marketPlaces.create({
       data: {
         name: input.name,
       },
     });
-
-    //return this.prismaService.marketsplaces.update({data: {marketplace} });
   }
 }

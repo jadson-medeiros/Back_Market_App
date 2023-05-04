@@ -6,8 +6,14 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserResolver } from './resolvers/user.resolver';
 import { PrismaService } from './prisma.service';
+import { MarketPlaceResolver } from './resolvers/marketplace.resolver';
 
-const graphQLImports = [UserResolver];
+const graphQLImports = [
+  PrismaService,
+  UserResolver,
+  AppService,
+  MarketPlaceResolver,
+];
 
 @Module({
   imports: [
@@ -18,7 +24,7 @@ const graphQLImports = [UserResolver];
     }),
   ],
   controllers: [AppController],
-  providers: [PrismaService, UserResolver, AppService],
+  providers: graphQLImports,
   exports: [PrismaService],
 })
 export class AppModule {}
